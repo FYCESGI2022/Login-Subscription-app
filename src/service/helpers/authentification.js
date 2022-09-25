@@ -1,6 +1,6 @@
-import apiAuthentification  from '../api/api.authentification'
+import apiAuthentification from '../api/authentification/api.login'
 // import {BASE_URL_LOGIN} from "../../Constants";
-
+import apiRegistration from '../api/authentification/api.registration'
 
 //login du user avec ses identifiants
 const authenticate = (username, password) => {
@@ -12,7 +12,13 @@ const authenticate = (username, password) => {
   const usernameBody = encodedUsernameKey + '=' + encodedUsernameValue
   const passwordBody = encodedPasswordKey + '=' + encodedPasswordValue
   const formBody = usernameBody + '&' + passwordBody
-const BASE_URL_LOGIN = "http://localhost:8080/login"
+  const BASE_URL_LOGIN = "http://localhost:8080/login"
   return apiAuthentification.post(BASE_URL_LOGIN, formBody)
 }
+
 export default authenticate
+
+
+export const registration = (data) => {
+  return apiRegistration.post(`user/save`, data)
+}

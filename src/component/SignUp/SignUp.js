@@ -1,5 +1,4 @@
-import * as React from 'react';
-import Avatar from '@mui/material/Avatar';
+import React, { useState } from "react";
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
@@ -8,12 +7,12 @@ import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import logo from '../Assets/logo.jpg'
-
+import { registration } from '../../service//helpers/authentification';
+import SnackBar from '../Notification/SnackBar'
 
 function Copyright(props) {
   return (
@@ -30,14 +29,46 @@ function Copyright(props) {
 
 const theme = createTheme();
 
+
+
+
 export default function SignUp() {
+  const [notifOpen, setNotifOpen] = useState(false);
+  const [notifMessage, setNotifMessage] = useState("hello");
+
+
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
+    var object = {};
+    data.forEach((value, key) => {
+      if (!Reflect.has(object, key)) {
+        object[key] = value;
+        return;
+      }
+      if (!Array.isArray(object[key])) {
+        object[key] = [object[key]];
+      }
+      object[key].push(value);
     });
+
+
+    registration(object)
+      .then((response) => response.data)
+      .then((data) => {
+        
+        if (data) {
+          //  <Redirect to="/login" />
+        }
+      })
+      .catch((err) => {
+        setNotifMessage("err");
+        setNotifOpen(true);
+      });
+      
+
+
   };
 
   return (
@@ -52,12 +83,10 @@ export default function SignUp() {
             alignItems: 'center',
           }}
         >
-          {/* <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-            <LockOutlinedIcon />
-          </Avatar> */}
-
+          <SnackBar id="para" vertical={'bottom'} horizontal={'center'}  open={notifOpen} message={notifMessage} />
           <img src={logo} />
           <Typography component="h1" variant="h5">
+
             Inscription
           </Typography>
           <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
@@ -65,10 +94,10 @@ export default function SignUp() {
               <Grid item xs={12} sm={6}>
                 <TextField
                   autoComplete="given-name"
-                  name="prenom"
+                  name="firstName"
                   required
                   fullWidth
-                  id="prenom"
+                  id="firstName"
                   label="Prenom"
                   autoFocus
                 />
@@ -77,9 +106,9 @@ export default function SignUp() {
                 <TextField
                   required
                   fullWidth
-                  id="nom"
+                  id="lastName"
                   label="Nom"
-                  name="nom"
+                  name="lastName"
                   autoComplete="family-name"
                 />
               </Grid>
@@ -88,7 +117,7 @@ export default function SignUp() {
                   required
                   fullWidth
                   id="email"
-                  label="Email Address"
+                  label="Email"
                   name="email"
                   autoComplete="email"
                 />
@@ -97,18 +126,18 @@ export default function SignUp() {
                 <TextField
                   required
                   fullWidth
-                  id="adresse"
-                  label="Address"
-                  name="adresse"
-                  autoComplete="adresse"
+                  id="adress"
+                  label="Adresse"
+                  name="adress"
+                  autoComplete="adress"
                 />
               </Grid><Grid item xs={12} sm={6}>
                 <TextField
                   autoComplete="given-name"
-                  name="ville"
+                  name="city"
                   required
                   fullWidth
-                  id="ville"
+                  id="city"
                   label="Ville"
                   autoFocus
                 />
@@ -118,9 +147,9 @@ export default function SignUp() {
                 <TextField
                   required
                   fullWidth
-                  id="cp"
-                  label="CP"
-                  name="cp"
+                  id="postIndex"
+                  label="Code Postale"
+                  name="postIndex"
                   autoComplete="family-name"
                 />
               </Grid>
@@ -130,7 +159,7 @@ export default function SignUp() {
                   required
                   fullWidth
                   id="phoneNumber"
-                  label="PhoneNumber"
+                  label="Numéro de téléphone"
                   name="phoneNumber"
                   autoComplete="phoneNumber"
                 />
@@ -141,7 +170,7 @@ export default function SignUp() {
                   required
                   fullWidth
                   id="username"
-                  label="Username"
+                  label="Nom d'utilisateur"
                   name="username"
                   autoComplete="email"
                 />
@@ -152,7 +181,7 @@ export default function SignUp() {
                   required
                   fullWidth
                   name="password"
-                  label="Password"
+                  label="Mot de passe"
                   type="password"
                   id="password"
                   autoComplete="new-password"
@@ -161,7 +190,7 @@ export default function SignUp() {
               <Grid item xs={12}>
                 <FormControlLabel
                   control={<Checkbox value="allowExtraEmails" color="primary" />}
-                  label="I want to receive inspiration, marketing promotions and updates via email."
+                  label="J'accepte de recevoir des promotions marketing et des mises à jour par e-mail."
                 />
               </Grid>
             </Grid>
@@ -171,15 +200,17 @@ export default function SignUp() {
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Sign Up
+              Inscription
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>
                 <Link href="singin" variant="body2">
-                  Already have an account? Sign in
+
+                  Vous avez déjà un compte? S'identifier
                 </Link>
               </Grid>
             </Grid>
+
           </Box>
         </Box>
         <Copyright sx={{ mt: 5 }} />
