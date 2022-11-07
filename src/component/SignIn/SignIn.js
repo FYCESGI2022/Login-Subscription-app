@@ -53,7 +53,6 @@ export default function SignIn() {
       .then((data) => {
         if (data) {
           setAuthenticatedUser(data)
-
         }
       })
       .catch(function (error) {
