@@ -14,6 +14,9 @@ import logo from '../Assets/logo.jpg'
 import { registration } from '../../service//helpers/authentification';
 import SnackBar from '../Notification/SnackBar'
 import { Validate, ValidationGroup } from 'mui-validate';
+import { useHistory } from "react-router-dom";
+
+
 
 function Copyright(props) {
   return (
@@ -60,10 +63,9 @@ export default function SignUp() {
     registration(object)
       .then((response) => response.data)
       .then((data) => {
-
-        if (data) {
-          //  <Redirect to="/login" />
-        }
+       
+        
+        
       })
       .catch((err) => {
         setNotifMessage("err");
@@ -112,7 +114,7 @@ export default function SignUp() {
                 </Grid>
 
                 <Grid item xs={12} sm={6}>
-                  <Validate name="lastName" required regex={[/^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$/u, 'Veuilliez saisir un prénom valide']}>
+                  <Validate name="lastName" required regex={[/^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$/u, 'Veuilliez saisir un nom valide']}>
 
                     <TextField
                       required
@@ -233,6 +235,7 @@ export default function SignUp() {
               </ValidationGroup>
             </Grid>
             <Button
+              id="signUp"
               type="submit"
               fullWidth
               variant="contained"
