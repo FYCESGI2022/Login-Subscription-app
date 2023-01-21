@@ -57,7 +57,7 @@ export default function SignUp() {
     registration(object)
       .then((response) => response.data)
       .then((data) => {
-        
+
         if (data) {
           //  <Redirect to="/login" />
         }
@@ -148,7 +148,7 @@ export default function SignUp() {
                   required
                   fullWidth
                   id="postIndex"
-                  label="Code Postale"
+                  label="Code Postal"
                   name="postIndex"
                   autoComplete="family-name"
                 />
