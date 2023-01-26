@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import {
   BrowserRouter as Router,
   Switch,
@@ -6,35 +6,24 @@ import {
 } from "react-router-dom";
 import SignIn from "./component/SignIn/SignIn";
 import SignUp from "./component/SignUp/SignUp";
+import Home from "./component/Home/Home";
+
 
 function App() {
+  const [userId, setUserId] = useState(sessionStorage.getItem("userId"));
   return (
+    
     <Router>
       <div>
-        <nav>
-          {/* <ul>
-            <li>
-              <Link to="/">Home</Link>
-            </li>
-            <li>
-              <Link to="/about">About</Link>
-            </li>
-            <li>
-              <Link to="/users">Users</Link>
-            </li>
-          </ul> */}
-        </nav>
-
-        {/* A <Switch> looks through its children <Route>s and
-            renders the first one that matches the current URL. */}
         <Switch>
-          <Route path="/about">
+          <Route path="/signin">
             <SignIn />
           </Route>
           <Route path="/signUp">
             <SignUp />
           </Route>
-          <Route path="/">
+          <Route path="/home" component={Home} />
+          <Route path="/" exact>
             <SignIn />
           </Route>
         </Switch>

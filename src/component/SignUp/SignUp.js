@@ -14,9 +14,7 @@ import logo from '../Assets/logo.jpg'
 import { registration } from '../../service//helpers/authentification';
 import SnackBar from '../Notification/SnackBar'
 import { Validate, ValidationGroup } from 'mui-validate';
-import { useHistory } from "react-router-dom";
-
-
+import { Route,Redirect} from "react-router-dom";
 
 function Copyright(props) {
   return (
@@ -34,17 +32,18 @@ function Copyright(props) {
 const theme = createTheme();
 
 
-
+function AuthRoute() {
+  return <Redirect to="/home" />;
+};
 
 export default function SignUp() {
 
-
-
+  const [redirection, setRedirection] = useState(false);
   const [notifOpen, setNotifOpen] = useState(false);
   const [notifMessage, setNotifMessage] = useState("hello");
 
 
-  const handleSubmit = (event) => {
+  function handleSubmit(event){
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     var object = {};
@@ -57,24 +56,17 @@ export default function SignUp() {
         object[key] = [object[key]];
       }
       object[key].push(value);
-    });
-
-
+    })
     registration(object)
-      .then((response) => response.data)
-      .then((data) => {
-       
-        
-        
+      .then((response) => {
+          if (response.status==201) {
+          
+          }
       })
-      .catch((err) => {
-        setNotifMessage("err");
-        setNotifOpen(true);
-      });
-
-
-
-  };
+      .catch(() => {
+          alert("une erreur est survenu");
+      })
+}
 
   return (
     <ThemeProvider theme={theme}>
@@ -99,7 +91,7 @@ export default function SignUp() {
               <ValidationGroup>
                 <Grid item xs={12} sm={6}>
 
-                  <Validate name="firstName" required regex={[/^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$/u, 'Veuilliez saisir un prénom valide']}>
+                  <Validate name="firstName" required regex={[/^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$/u, 'Veuillez saisir un prénom valide']}>
                     <TextField
                       autoComplete="given-name"
                       name="firstName"
@@ -114,7 +106,7 @@ export default function SignUp() {
                 </Grid>
 
                 <Grid item xs={12} sm={6}>
-                  <Validate name="lastName" required regex={[/^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$/u, 'Veuilliez saisir un nom valide']}>
+                  <Validate name="lastName" required regex={[/^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$/u, 'Veuillez saisir un nom valide']}>
 
                     <TextField
                       required
@@ -129,7 +121,7 @@ export default function SignUp() {
                 </Grid>
 
                 <Grid item xs={12}>
-                  <Validate name="email" required regex={[/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/, 'Veuilliez saisir un email valide']}>
+                  <Validate name="email" required regex={[/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/, 'Veuillez saisir un email valide']}>
 
                     <TextField
                       required
@@ -142,7 +134,7 @@ export default function SignUp() {
                   </Validate>
                 </Grid>
                 <Grid item xs={12}>
-                  <Validate name="adress" required regex={[/^[a-zA-Z0-9\s,'-]*$/, 'Veuilliez saisir un email valide']}>
+                  <Validate name="adress" required regex={[/^[a-zA-Z0-9\s,'-]*$/, 'Veuillez saisir une adresse valide']}>
 
                     <TextField
                       required
@@ -155,7 +147,7 @@ export default function SignUp() {
                   </Validate>
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                  <Validate name="city" required regex={[/^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$/, 'Veuilliez saisir une ville valide']}>
+                  <Validate name="city" required regex={[/^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$/, 'Veuillez saisir une ville valide']}>
                     <TextField
                       autoComplete="given-name"
                       name="city"
@@ -169,7 +161,7 @@ export default function SignUp() {
                 </Grid>
 
                 <Grid item xs={12} sm={6}>
-                  <Validate name="postIndex" required regex={[/^(?:0[1-9]|[1-8]\d|9[0-8])\d{3}$/, 'Veuilliez saisir un code postale valide']}>
+                  <Validate name="postIndex" required regex={[/^(?:0[1-9]|[1-8]\d|9[0-8])\d{3}$/, 'Veuillez saisir un code postale valide']}>
 
                     <TextField
                       required
@@ -184,7 +176,7 @@ export default function SignUp() {
                 </Grid>
 
                 <Grid item xs={12}>
-                  <Validate name="phoneNumber" required regex={[/^[+](\d{3})\)?(\d{3})(\d{5,6})$|^(\d{10,10})$/, 'Veuilliez saisir un numero valide']}>
+                  <Validate name="phoneNumber" required regex={[/^[+](\d{3})\)?(\d{3})(\d{5,6})$|^(\d{10,10})$/, 'Veuillez saisir un numero valide']}>
                     <TextField
                       required
                       fullWidth
@@ -198,7 +190,7 @@ export default function SignUp() {
                 </Grid>
 
                 <Grid item xs={12}>
-                  <Validate name="username" required regex={[/^(?=[a-zA-Z0-9._]{8,20}$)(?!.*[_.]{2})[^_.].*[^_.]$/, "Veuilliez saisir un pseudo valide : longeur 8 à 20 , charactère alphanumerique "]}>
+                  <Validate name="username" required regex={[/^(?=[a-zA-Z0-9._]{8,20}$)(?!.*[_.]{2})[^_.].*[^_.]$/, "Veuillez saisir un pseudo valide : longeur 8 à 20 , charactère alphanumerique "]}>
 
                     <TextField
                       required
@@ -213,7 +205,7 @@ export default function SignUp() {
                 </Grid>
 
                 <Grid item xs={12}>
-                  <Validate name="password" required regex={[/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/, "Veuilliez saisir un mots de passe valide : minimum huit caractères, au moins une lettre et un chiffre "]}>
+                  <Validate name="password" required regex={[/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/, "Veuillez saisir un mots de passe valide : minimum huit caractères, au moins une lettre et un chiffre "]}>
 
                     <TextField
                       required
