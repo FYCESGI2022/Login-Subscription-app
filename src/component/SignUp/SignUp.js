@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { Redirect } from "react";
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
@@ -12,9 +12,8 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import logo from '../Assets/logo.jpg'
 import { registration } from '../../service//helpers/authentification';
-import SnackBar from '../Notification/SnackBar'
 import { Validate, ValidationGroup } from 'mui-validate';
-import { Route,Redirect} from "react-router-dom";
+import { createBrowserHistory } from 'history';
 
 function Copyright(props) {
   return (
@@ -31,18 +30,16 @@ function Copyright(props) {
 
 const theme = createTheme();
 
-
-function AuthRoute() {
-  return <Redirect to="/home" />;
-};
-
+const history = createBrowserHistory();
 export default function SignUp() {
 
-  const [redirection, setRedirection] = useState(false);
-  const [notifOpen, setNotifOpen] = useState(false);
-  const [notifMessage, setNotifMessage] = useState("hello");
-
-
+  function Login() {
+    React.useEffect(() => {
+      history.push('/pageafterlogin')
+    }, [])
+  
+    return <h1>Login page</h1>
+  }
   function handleSubmit(event){
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -59,13 +56,10 @@ export default function SignUp() {
     })
     registration(object)
       .then((response) => {
-          if (response.status==201) {
-          
+          if (response.status===201) {
+            window.location.href = "/home"
           }
-      })
-      .catch(() => {
-          alert("une erreur est survenu");
-      })
+      })      
 }
 
   return (
@@ -80,8 +74,8 @@ export default function SignUp() {
             alignItems: 'center',
           }}
         >
-          <SnackBar id="para" vertical={'bottom'} horizontal={'center'} open={notifOpen} message={notifMessage} />
-          <img src={logo} />
+        
+          <img src={logo} alt="logo" />
           <Typography component="h1" variant="h5">
 
             Inscription

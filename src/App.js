@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React from "react";
 import {
   BrowserRouter as Router,
   Switch,
@@ -10,7 +10,6 @@ import Home from "./component/Home/Home";
 
 
 function App() {
-  const [userId, setUserId] = useState(sessionStorage.getItem("userId"));
   return (
     
     <Router>
@@ -22,7 +21,7 @@ function App() {
           <Route path="/signUp">
             <SignUp />
           </Route>
-          <Route path="/home" component={Home} />
+          <Route path="/home" exact component={Home} />
           <Route path="/" exact>
             <SignIn />
           </Route>
