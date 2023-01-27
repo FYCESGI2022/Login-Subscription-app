@@ -1,5 +1,4 @@
 import apiAuthentification from '../api/authentification/api.login'
-// import {BASE_URL_LOGIN} from "../../Constants";
 import apiRegistration from '../api/authentification/api.registration'
 
 //login du user avec ses identifiants

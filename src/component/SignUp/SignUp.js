@@ -1,9 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
@@ -12,20 +10,7 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import logo from '../Assets/logo.jpg'
 import { registration } from '../../service//helpers/authentification';
-import SnackBar from '../Notification/SnackBar'
 
-function Copyright(props) {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
 
 const theme = createTheme();
 
@@ -33,8 +18,6 @@ const theme = createTheme();
 
 
 export default function SignUp() {
-  const [notifOpen, setNotifOpen] = useState(false);
-  const [notifMessage, setNotifMessage] = useState("hello");
 
 
 
@@ -55,16 +38,16 @@ export default function SignUp() {
 
 
     registration(object)
-      .then((response) => response.data)
-      .then((data) => {
-
+      .then(() => {
+        
         if (data) {
-          //  <Redirect to="/login" />
+          window.location.href = "/home"
         }
       })
       .catch((err) => {
-        setNotifMessage("err");
-        setNotifOpen(true);
+        if(err.code === "ERR_BAD_REQUEST"){
+         alert("Nom d'utilisateur déja pris")
+        }
       });
       
 
@@ -83,8 +66,7 @@ export default function SignUp() {
             alignItems: 'center',
           }}
         >
-          <SnackBar id="para" vertical={'bottom'} horizontal={'center'}  open={notifOpen} message={notifMessage} />
-          <img src={logo} />
+          <img src={logo} alt="logo"/>
           <Typography component="h1" variant="h5">
 
             Inscription
@@ -187,12 +169,7 @@ export default function SignUp() {
                   autoComplete="new-password"
                 />
               </Grid>
-              <Grid item xs={12}>
-                <FormControlLabel
-                  control={<Checkbox value="allowExtraEmails" color="primary" />}
-                  label="J'accepte de recevoir des promotions marketing et des mises à jour par e-mail."
-                />
-              </Grid>
+              
             </Grid>
             <Button
               type="submit"
@@ -204,7 +181,7 @@ export default function SignUp() {
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>
-                <Link href="singin" variant="body2">
+                <Link href="singIn" variant="body2">
 
                   Vous avez déjà un compte? S'identifier
                 </Link>
@@ -213,7 +190,6 @@ export default function SignUp() {
 
           </Box>
         </Box>
-        <Copyright sx={{ mt: 5 }} />
       </Container>
     </ThemeProvider>
   );

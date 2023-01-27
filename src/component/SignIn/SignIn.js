@@ -13,51 +13,27 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import logo from '../Assets/logo.jpg'
 import authenticate from '../../service/helpers/authentification';
 
-
-function Copyright(props) {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
-
 const theme = createTheme();
 
 export default function SignIn() {
 
-  function setAuthenticatedUser(data) {
-    sessionStorage.setItem('accessToken', data.accessToken)
-    sessionStorage.setItem('role', data.role)
-    sessionStorage.setItem('userId', data.userId)
-    // setUserId(data.userId)
-    // setUserRole(data.role)
-  }
+ 
 
   const handleSubmit = (event) => {
     event.preventDefault();
     const form = new FormData(event.currentTarget);
-    console.log({
-      username: form.get('username'),
-      password: form.get('password'),
-    });
-    console.log(form.get('username'));
-    console.log(form.get('password'));
     authenticate(form.get('username'), form.get('password'))
       .then((response) => response.data)
       .then((data) => {
         if (data) {
-          setAuthenticatedUser(data)
+          window.location.href = "/home"
 
         }
       })
-      .catch(function (error) {
-        console.log(error);
+      .catch((err) => {
+       
+         alert("Mauvaise connexion")
+        
       });
   };
 
@@ -75,7 +51,7 @@ export default function SignIn() {
         >
         
 
-          <img src={logo} />
+          <img src={logo} alt="logo"/>
 
           <Typography component="h1" variant="h5" >
 
@@ -128,7 +104,6 @@ export default function SignIn() {
             </Grid>
           </Box>
         </Box>
-        <Copyright sx={{ mt: 8, mb: 4 }} />
       </Container>
     </ThemeProvider>
   );
