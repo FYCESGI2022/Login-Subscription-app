@@ -31,7 +31,7 @@ export default function Home() {
 
           <Typography component="h1" variant="h5" >
 
-            Bienvenue
+          accueil
           </Typography>
         </Box>
       </Container>
